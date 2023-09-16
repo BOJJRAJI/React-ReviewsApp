@@ -1,78 +1,62 @@
 import {Component} from 'react'
-
 import './index.css'
 
-const Review = props => {
-  const {reviewDetails} = props
-  const {imgUrl, username, companyName, description} = reviewDetails
-
-  return (
-    <div className="review-container">
-      <img src={imgUrl} alt={username} className="user-image" />
-      <p className="user-name">{username}</p>
-      <p className="company-name">{companyName}</p>
-      <p className="description">{description}</p>
-    </div>
-  )
-}
-
 class ReviewsCarousel extends Component {
-  state = {index: 0}
+  state = {activeList: 0}
 
-  gotoPreviousReview = () => {
-    console.log('raji')
-    const {index} = this.state
-    console.log(index)
-    if (index > 0) {
-      this.setState(prevState => ({index: prevState.index - 1}))
+  onBeforeList = () => {
+    const {activeList} = this.state
+    if (activeList > 0) {
+      this.setState(prevState => ({activeList: prevState.activeList - 1}))
     }
   }
 
-  gotoNextReview = () => {
-    console.log('raji')
-    const {index} = this.state
-    console.log(index)
-    const {reviewsList} = this.props
-    if (index < reviewsList.length - 1) {
-      this.setState(prevState => ({index: prevState.index + 1}))
+  onAfterList = () => {
+    const {activeList} = this.state
+    if (activeList < 3) {
+      this.setState(prevState => ({activeList: prevState.activeList + 1}))
     }
   }
 
   render() {
-    const {index} = this.state
+    const {activeList} = this.state
     const {reviewsList} = this.props
-
+    const {imgUrl, username, description, companyName} = reviewsList[activeList]
     return (
       <div className="bg-container">
         <h1 className="heading">Reviews</h1>
         <div className="card">
           <button
-            className="button"
             type="button"
+            className="image-button"
+            onClick={this.onBeforeList}
             data-testid="leftArrow"
-            onClick={this.gotoPreviousReview}
           >
             <img
               src="https://assets.ccbp.in/frontend/react-js/left-arrow-img.png"
               alt="left arrow"
-              className="icon"
+              className="arrow-icon"
             />
           </button>
 
-          <Review
-            reviewDetails={reviewsList[index]}
-            onClick={this.gotoNextReview}
-          />
+          <ul className="data-container">
+            <li>
+              <img src={imgUrl} alt={username} className="profile" />
+              <p className="name">{username}</p>
+              <p className="company">{companyName}</p>
+              <p className="description">{description}</p>
+            </li>
+          </ul>
           <button
-            className="button"
             type="button"
-            onClick={this.gotoNextReview}
+            className="image-button"
+            onClick={this.onAfterList}
             data-testid="rightArrow"
           >
             <img
-              src="https://assets.ccbp.in/frontend/react-js/right-arrow-img.png "
+              src="https://assets.ccbp.in/frontend/react-js/right-arrow-img.png"
               alt="right arrow"
-              className="icon"
+              className="arrow-icon"
             />
           </button>
         </div>
