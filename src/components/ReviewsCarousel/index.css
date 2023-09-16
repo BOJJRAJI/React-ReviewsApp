@@ -16,6 +16,8 @@
   font-weight: bold;
   color: #ffffff;
   font-family: 'Roboto';
+  text-align: center;
+  align-self: center;
 }
 .card {
   display: flex;
